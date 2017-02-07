@@ -56,7 +56,9 @@ sum-up-numbers-general([X|Y], N):-
 sum-up-numbers-general([X|Y], N):-
 	is_list(X),
 	sum-up-numbers-general(X, Sum1),
-	N is 0 + Sum1.
+	N is 0 + Sum1,
+	sum-up-numbers-general(Y, Sum),
+	N is 0 + Sum.
 
 sum-up-numbers-general([X|Y], N):- 
 	number(X),  
