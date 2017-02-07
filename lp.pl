@@ -23,11 +23,10 @@ numbers not in nested lists in L. If there are no such numbers, the result is ze
 sum-up-numbers-simple([],0).
 
 sum-up-numbers-simple([X|Y], N):-
-	number(X),
-	sum-up-numbers-simple(Y, N),
-	N is X + 
-	N is 0 + Yret
-
+	not(number(X)),
+	sum-up-numbers-simple(Y, SUM),
+	N is 0 + SUM,
+	N is X + SUM.
 
 
 
