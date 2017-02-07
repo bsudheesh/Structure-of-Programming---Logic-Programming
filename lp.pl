@@ -82,8 +82,9 @@ L1 L2 N Result
 
 
 
-get-min-function([X], X).
 
+
+get-min-function([X], X).
 
 get-min-function([X|Y], M):-
 	not(number(X)),
@@ -91,7 +92,7 @@ get-min-function([X|Y], M):-
 
 get-min-function([X,Y|Z], M):-
 	not(number(Y)),
-	get-min-function(X|Z, M).
+	get-min-function([X|Z], M).
 
 get-min-function([X,Y|Z], M):-
 	number(X),
@@ -104,5 +105,11 @@ get-min-function([X,Y|Z], M):-
 	number(Y),
 	X > Y,
 	get-min-function([Y|Z], M).
+
+
+
+
+
+
 
 
