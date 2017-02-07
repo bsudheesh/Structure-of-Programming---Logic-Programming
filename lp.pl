@@ -27,42 +27,32 @@ sum-up-numbers-simple([X|Y], N):-
 /*
 Question 2
 
-Write a predicate sum-up-numbers-general(L, N). L is a list, which may
-contain as elements numbers and non-numbers. The predicate is true if N is the sum of all
-the numbers (including those in nested lists) in L. If there are no such numbers, the result is
-zero.
-
-L N Result
-[] 0 True
-[100] 100 True
-[100,200] 300 True
-[a] 0 True
-[a,100,b,200,c,300,d] 600 True
-[[]] 0 True
-[[100]] 100 True
-[100,[200]] 300 True
-[a,100,b,[200],c,300,d] 600 True
-[a,100,[[b,[[200],c]],300,d]] 600 True
+There are 4 cases.
+1) If the list is empty, return 0.
+2) If the first element is not a number or a list, we add zero and call the function recursively.
+3) If the first element is a list, we recursively call the function with the first element of the list
+and then we do the same for the other element. We add the two sum obtained.
+4) Else if number, we add the first element and the rest of the list.
 
 */
 
-sum-up-numbers-general([],0). 
+sum-up-numbers-general([],0). %if the list is empty
 
 sum-up-numbers-general([X|Y], N):- 
-	not(number(X)), 
-	sum-up-numbers-general(Y, Sum),
-	N is 0 + Sum. 
+	not(number(X)),  %if not number or a list
+	sum-up-numbers-general(Y, Sum), 
+	N is 0 + Sum. %add zero and call the function again
 
 sum-up-numbers-general([X|Y], N):-
-	is_list(X),
-	sum-up-numbers-general(X, Sum1),
-	sum-up-numbers-general(Y, Sum),
-	N is 0 + Sum1 + Sum.
+	is_list(X),   %if list
+	sum-up-numbers-general(X, Sum1),  %call the function with the first element
+	sum-up-numbers-general(Y, Sum),   %we call the function with the first element removed
+	N is 0 + Sum1 + Sum.   %we add the sum of the first element and the remamining element
 
 sum-up-numbers-general([X|Y], N):- 
-	number(X),  
+	number(X),   %if number
 	sum-up-numbers-general(Y, Sum),
-	N is X + Sum.  
+	N is X + Sum.  %we add the first element
 
 
 
