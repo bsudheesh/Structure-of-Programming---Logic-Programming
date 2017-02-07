@@ -82,13 +82,13 @@ L1 L2 N Result
 
 
 
-get-min-function([], []).
+get-min-function([X], X).
 
 
-get-min-function([X|Y], M):-
+get-min-function([X,Y|Z], M):-
 	number(X),
-	get-min-function(Y, Min),
-	M is X < Min.
+	X =< Y,
+	get-min-function([X|Z], M).
 
 
 
