@@ -94,10 +94,14 @@ get-min-function([X,Y|Z], M):-
 	get-min-function(X|Z, M).
 
 get-min-function([X,Y|Z], M):-
+	number(X),
+	number(Y),
 	X =< Y,
 	get-min-function([X|Z], M).
 
 get-min-function([X,Y|Z], M):-
+	number(X),
+	number(Y),
 	X > Y,
 	get-min-function([Y|Z], M).
 
