@@ -55,4 +55,40 @@ sum-up-numbers-general([X|Y], N):-
 	N is X + Sum.  %we add the first element
 
 
+/*
+Question 3
+
+Write a predicate min-above-min(L1, L2, N). L1 and L2 are both simple
+lists, which do not contain nested lists. Both lists may have non-numeric elements. The
+predicate is true if N is the minimum of the numbers in L1 that are larger than the smallest
+number in L2. If there is no number in L2, all the numbers in L1 should be used to calculate
+the minimum. If there is no number in L1 larger than the smallest number in L2, the
+predicate is false.
+
+Test cases:
+L1 L2 N Result
+[] [a,100,b,200,c,300,d] 100 False
+[100] [] 100 True
+[a,200,b,100,c,300,d] [] 100 True
+[a] [] 100 False
+[a] [a,200,b,300,c,100,d] 100 False
+[a,b,c] [a,200,b,300,c,100,d] 100 False
+[a,200] [a,200,b,300,c,100,d] 200 True
+[a,100] [a,200,b,300,c,100,d] 100 False
+[100,200,300] [300,100,200] 200 True
+[a,300,b,100,c,200,d] [a,200,b,300,c,100,d] 200 True
+
+*/
+
+
+
+get-min-function([], []).
+
+
+get-min-function([X|Y], M):-
+	number(X),
+	get-min-function(Y, Min),
+	M is X < Min.
+
+
 
