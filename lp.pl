@@ -58,25 +58,12 @@ sum-up-numbers-general([X|Y], N):-
 /*
 Question 3
 
-Write a predicate min-above-min(L1, L2, N). L1 and L2 are both simple
-lists, which do not contain nested lists. Both lists may have non-numeric elements. The
-predicate is true if N is the minimum of the numbers in L1 that are larger than the smallest
-number in L2. If there is no number in L2, all the numbers in L1 should be used to calculate
-the minimum. If there is no number in L1 larger than the smallest number in L2, the
-predicate is false.
+The idea here is to have a helper function that gives the min of a list.
+If the list is empty, the function returns null, if no numberic value, a symbol is returned.
+We then have a function that returns a list with all numbers. The function is number-list.
+min-above-min-helper-function returns a list with all numbers less than the min element in L2.
+min-above-min returns the min value that the function min-above-min-helper-function returns.
 
-Test cases:
-L1 L2 N Result
-[] [a,100,b,200,c,300,d] 100 False
-[100] [] 100 True
-[a,200,b,100,c,300,d] [] 100 True
-[a] [] 100 False
-[a] [a,200,b,300,c,100,d] 100 False
-[a,b,c] [a,200,b,300,c,100,d] 100 False
-[a,200] [a,200,b,300,c,100,d] 200 True
-[a,100] [a,200,b,300,c,100,d] 100 False
-[100,200,300] [300,100,200] 200 True
-[a,300,b,100,c,200,d] [a,200,b,300,c,100,d] 200 True
 
 */
 
@@ -84,64 +71,81 @@ L1 L2 N Result
 
 
 
-get-min-function([X], X).
+get-min-function([X], X). %base case
 
 get-min-function([X|Y], M):-
-	not(number(X)),
-	get-min-function(Y, M).
+	not(number(X)),  %if first element not number
+	get-min-function(Y, M).   %we recursively call the function
 
 get-min-function([X,Y|Z], M):-
-	not(number(Y)),
-	get-min-function([X|Z], M).
-
-get-min-function([X,Y|Z], M):-
-	number(X),
-	number(Y),
-	X =< Y,
-	get-min-function([X|Z], M).
+	not(number(Y)),  %if second element is not number
+	get-min-function([X|Z], M).   %we recursively call the function
 
 get-min-function([X,Y|Z], M):-
 	number(X),
 	number(Y),
-	X > Y,
-	get-min-function([Y|Z], M).
+	X =< Y,  %if first and second number are numbers, and first element is less than or equal to second
+	get-min-function([X|Z], M).   %remove second element and call the function
 
-min-above-min(L1, L2, N):-
+get-min-function([X,Y|Z], M):-
+	number(X),
+	number(Y),
+	X > Y,    %if first and second number are numbers, and first element is less than or equal to second
+	get-min-function([Y|Z], M).   %removes first element and call the function
+
+min-above-min(L1, _, N):- %handles case when there is no number in list L1
 	get-min-function(L1, M1),
 	not(number(M1)),
-	get-min-function(L2,N).
-
-
-min-above-min(L1, L2, N):-
-	get-min-function(L2, M2),
-	not(number(M2)),
 	get-min-function(L1,N).
 
+min-above-min(L1, _, N):-  %handles case when the list1 is empty
+	length(L1,0),
+	get-min-function(L1,N).
 
-number-list([],[]).
+min-above-min(L1, L2, N):-   %handles case when the list2 is empty
+	length(L2,0),
+	get-min-function(L1, N).
 
-number-list(L, Lists) :-
+min-above-min(L1, L2, N):-    %handles case if there is no number in list l2.
+	get-min-function(L2, M2),
+	not(number(M2)),
+	get-min-function(L1,N).   %returns the min element of L1.
+
+
+
+number-list([],[]).   %base case. Function that adds only numeric values to list
+
+number-list(L, Lists) :- %handles case when the first element is not number
 	[X | Y] = L,
 	not(number(X)),
 	number-list(Y, Lists).
 
-number-list([X | Y], [X | Lists]):-
+number-list([X | Y], [X | Lists]):- %handles case when first element is number-list
+	%[X|Lists] adds the X to lists.
 	number(X),
 	number-list(Y, Lists).
 
 min-above-min(L1, L2, N):-
+	/*
+		1. Get all numeric value in list 1.
+		2. Get the minimum value in list 2.
+		3. Store all values greater than min of L2 in list Z.
+		4. return min of Z.
+	*/
 	number-list(L1, List1),
 	get-min-function(L2, M2),
 	min-above-min-helper-function(List1, M2, Z),
 	get-min-function(Z, N).
 
-min-above-min-helper-function([],_,[]).
+min-above-min-helper-function([],_,[]). %Base case. Adds values less than min of L2 to a list.
 
-min-above-min-helper-function([X | Y], M2, Z):-
+min-above-min-helper-function(L, M2, Z):- %if number in L1 is less than min of L2.
+	[X | Y] = L,
 	X =< M2,
 	min-above-min-helper-function(Y, M2, Z).
 
-min-above-min-helper-function([X | Y], M2, [X | Z]):-
+min-above-min-helper-function([X | Y], M2, [X | Z]):-  %if L1 is greater than min of L2.
+	%adds X to Z -> [X|Z]
 	min-above-min-helper-function(Y, M2, Z).
 
 
