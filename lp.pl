@@ -121,9 +121,18 @@ min-above-min(L1, L2, N):-
 min-above-min(L1, L2, N):-
 	get-min-function(L2, M2),
 	number(M2),
-	get-min-function(L1, M1),
-	number(M1),
-	
+	[X1 | Y1] = L1,
+	X1 > M1,
+	min-above-min(Y1, L2, N).
+
+min-above-min(L1, L2, N):-
+	get-min-function(L2, M2),
+	number(M2),
+	[X1 | Y1] = L1,
+	X1 < M1,
+	min-above-min(Y1, L2, N).
+
+
 
 
 
