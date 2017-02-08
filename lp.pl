@@ -186,16 +186,28 @@ make-nested-list-simple(L, Lists):-
 	append([X1], Lists1, Lists).
 	
 
-common-unique-elements(L1, L2, N):-
-	[X1 | Y1] = L1,
-	member(X1, L2),
-	common-unique-elements(Y1, L2, N1),
-	append([X1], N1, N ).
+common-unique-elements([],[]).
+common-unique-elements-helper-function([],[]).
 
 common-unique-elements(L1, L2, N):-
-	[X1 | Y1] = L1,
-	not(member(X1, L2)),
-	common-unique-elements(Y1, L2, N).
+	make-nested-list-simple(L1, Lists1),
+	common-unique-elements-helper-function(Lists1, L2, N).
+
+common-unique-elements-helper-function(Lists1, L2, N):-
+	[X1 | Y1] = Lists1,
+	member(X1, Lists1),
+	common-unique-elements-helper-function(Y1, L2, N1),
+	append([X1], N1, N ).
+
+common-unique-elements-helper-function(Lists1, L2, N):-
+	[X1 | Y1] = Lists1,
+	not(member(X1, Lists1)),
+	common-unique-elements-helper-function(Y1, L2, N).
+
+
+
+
+
 
 
 
