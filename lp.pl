@@ -129,14 +129,10 @@ number-list([X | Y], [X | lists]):-
 	number-list(Y, lists).
 
 min-above-min(L1, L2, N):-
+	number-list(L1, list1),
 	get-min-function(L2, M2),
-	number(M2),
-	[X1 | Y1] = L1,
-	number(X1),
-	X1 > M2,
-	min-above-min-helper-function(X1, M2, N),
-	min-above-min(Y1, L2, N).
-	%get-min-function(L11, N).
+	min-above-min-helper-function(L1, M2, Z),
+	get-min-function(Z, N).
 
 
 
