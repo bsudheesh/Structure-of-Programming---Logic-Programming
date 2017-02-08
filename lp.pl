@@ -120,26 +120,28 @@ min-above-min(L1, L2, N):-
 
 number-list([],[]).
 
-number-list([X | Y], lists):-
+number-list(L, Lists) :-
+	[X | Y] = L,
 	not(number(X)),
-	number-list(Y, lists).
+	number-list(Y, Lists).
 
-number-list([X | Y], [X | lists]):-
+number-list([X | Y], [X | Lists]):-
 	number(X),
-	number-list(Y, lists).
+	number-list(Y, Lists).
 
 min-above-min(L1, L2, N):-
-	number-list(L1, list1),
+	number-list(L1, List1),
 	get-min-function(L2, M2),
-	min-above-min-helper-function(L1, M2, Z),
+	min-above-min-helper-function(List1, M2, Z),
 	get-min-function(Z, N).
 
-min-above-min-helper-function(L1, M2, Z):-
-	[X | Y] = L1,
-	X <= M2,
+min-above-min-helper-function([],_,[]).
+
+min-above-min-helper-function([X | Y], M2, Z):-
+	X =< M2,
 	min-above-min-helper-function(Y, M2, Z).
 
-min-above-min-helper-function([X | Y], M2, [X |Z]):-
+min-above-min-helper-function([X | Y], M2, [X | Z]):-
 	min-above-min-helper-function(Y, M2, Z).
 
 
