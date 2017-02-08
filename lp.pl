@@ -167,12 +167,12 @@ L1 L2 N Result
 [a,9,[b,8,c],[13,[[d],6],e,20]] [2,e,[3,d,4],[c,[[5],[b],[[6]]],a],7] [a,b,c,d,6,e] True
 */
 
-
+common-unique-elements([],_,[]).
 
 common-unique-elements(L1, L2, N):-
 	[X1 | Y1] = L1,
 	member(X1, L2),
-	common-unique-elements(L1, L2, N1),
+	common-unique-elements(Y1, L2, N1),
 	append([X1], N1, N ).
 
 
