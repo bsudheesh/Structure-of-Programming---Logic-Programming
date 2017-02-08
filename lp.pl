@@ -106,18 +106,24 @@ get-min-function([X,Y|Z], M):-
 	X > Y,
 	get-min-function([Y|Z], M).
 
-/*
+
 min-above-min(L1, L2, N):-
 	get-min-function(L1, M1),
-	number(M1),
-	False.
-*/
+	not(number(M1)),
+	get-min-function(L2,N).
+
 
 min-above-min(L1, L2, N):-
 	get-min-function(L2, M2),
 	not(number(M2)),
 	get-min-function(L1,N).
 
+min-above-min(L1, L2, N):-
+	get-min-function(L2, M2),
+	number(M2),
+	get-min-function(L1, M1),
+	number(M1),
+	
 
 
 
