@@ -150,21 +150,12 @@ min-above-min-helper-function([X | Y], M2, [X | Z]):-  %if L1 is greater than mi
 
 
 /*
-	Question 4: Write a predicate common-unique-elements(L1,L2,N). L1 and L2 are
-both general lists, which may contain nested lists. The predicate is true if N is a simple list (i.e.
-a list without sub-lists) of the items that appear in both L1 and L2 (including the sub-lists
-within). The elements in the result list must be unique.
-L1 L2 N Result
-[] [] [] True
-[] [a,b,c,d,e] [] True
-[a,b,c,d,e] [] [] True
-[a] [a] [a] True
-[[[a]]] [a] [a] True
-[a,b] [b,a] [a,b] True
-[a,b] [b,c,a] [a,b] True
-[a,c,b] [a,b] [a,b] True
-[a,9,b,8,c,13,d,6,e,20] [2,e,3,d,4,c,5,b,6,a,7] [a,b,c,d,6,e] True
-[a,9,[b,8,c],[13,[[d],6],e,20]] [2,e,[3,d,4],[c,[[5],[b],[[6]]],a],7] [a,b,c,d,6,e] True
+	Question4.
+	The main idea here is
+	1) Make nested list into a simple list. make-nested-list-simple does that
+	2) Next, send the simple list of l1 and l2 to common-unique-elements-helper-function.
+	3) common-unique-elements-helper-function uses member function to see if the first element 
+	   of L1 is a member of L2. If yes, append it to a new list and the new list with N.
 */
 
 common-unique-elements([],_,[]).
@@ -172,34 +163,40 @@ common-unique-elements([],_,[]).
 
 make-nested-list-simple([],[]).
 
+%makes nested list simple: condition, the first element of L1 is a list
 make-nested-list-simple(L, Lists):-
 	[X1 | Y1] = L,
 	is_list(X1),
-	make-nested-list-simple(X1, Lists2),
-	make-nested-list-simple(Y1, Lists1),
-	append(Lists1,Lists2, Lists).
+	make-nested-list-simple(X1, Lists2), %make list2 having the elements from the first list
+	make-nested-list-simple(Y1, Lists1),  %make list1 having the elements from the remamining part.
+	append(Lists2,Lists1, Lists). %append both lists2 and list1.
 
+
+%makes nested list simple: condition, the first element of L1 is not a list.
 make-nested-list-simple(L, Lists):-
 	[X1 | Y1] = L,
 	not(is_list(X1)),
 	make-nested-list-simple(Y1, Lists1),
-	append([X1], Lists1, Lists).
+	append([X1], Lists1, Lists).  %add the element to Lists
 	
 
 common-unique-elements([],_,[]).
 common-unique-elements-helper-function([],_,[]).
 
-common-unique-elements(L1, L2, N):-
+common-unique-elements(L1, L2, N):- %makes list1 and list2 simple and then calls the helper function.
 	make-nested-list-simple(L1, Lists1),
 	make-nested-list-simple(L2, Lists2),
 	common-unique-elements-helper-function(Lists1, Lists2, N).
 
+
+%if the first element of L1 is a member of L1, we add it to X1 and call function again.
 common-unique-elements-helper-function(Lists1, Lists2, N):-
 	[X1 | Y1] = Lists1,
 	member(X1, Lists2),
 	common-unique-elements-helper-function(Y1, Lists2, N1),
 	append([X1], N1, N ).
 
+%if not a member of L1, we call the function again.
 common-unique-elements-helper-function(Lists1, Lists2, N):-
 	[X1 | Y1] = Lists1,
 	not(member(X1, Lists2)),
