@@ -106,12 +106,6 @@ get-min-function([X,Y|Z], M):-
 	X > Y,
 	get-min-function([Y|Z], M).
 
-compare-numbers(X, Y, _):-
-	number(X),
-	number(Y),
-	X > Y.
-
-
 min-above-min(L1, L2, N):-
 	get-min-function(L1, M1),
 	not(number(M1)),
@@ -124,18 +118,28 @@ min-above-min(L1, L2, N):-
 	get-min-function(L1,N).
 
 min-above-min(L1, L2, N):-
-	get-min-function(L2, Z),
+	get-min-function(L2, M2),
+	number(M2),
 	[X1 | Y1] = L1,
-	X1 > Z,
-	min-above-min(Y1, L2, Z1),
-	min(X1, Z1, N).
+	number(X1),
+	X1 > M2,
+	min-above-min-helper-function(Y1, L11),
+	get-min-function(Y1, N).
 
 min-above-min(L1, L2, N):-
-	get-min-function(L2, M2),
+	get-min-function(L2, M2).
+	number(M2),
 	[X1 | Y1] = L1,
-	compare-numbers(X1, M2, Z),
-	not(min-above-min(Y1, L2, N)),
-	N is X1.
+	not(number(X1)),
+	min-above-min-helper-function(Y1, N).
+
+append([], X1, X1).
+
+append([X|Y],Z,[X|W]):- 
+	append(Y,Z,W).
+
+
+
 
 
 
