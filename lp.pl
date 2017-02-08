@@ -149,6 +149,32 @@ min-above-min-helper-function([X | Y], M2, [X | Z]):-  %if L1 is greater than mi
 	min-above-min-helper-function(Y, M2, Z).
 
 
+/*
+	Question 4: Write a predicate common-unique-elements(L1,L2,N). L1 and L2 are
+both general lists, which may contain nested lists. The predicate is true if N is a simple list (i.e.
+a list without sub-lists) of the items that appear in both L1 and L2 (including the sub-lists
+within). The elements in the result list must be unique.
+L1 L2 N Result
+[] [] [] True
+[] [a,b,c,d,e] [] True
+[a,b,c,d,e] [] [] True
+[a] [a] [a] True
+[[[a]]] [a] [a] True
+[a,b] [b,a] [a,b] True
+[a,b] [b,c,a] [a,b] True
+[a,c,b] [a,b] [a,b] True
+[a,9,b,8,c,13,d,6,e,20] [2,e,3,d,4,c,5,b,6,a,7] [a,b,c,d,6,e] True
+[a,9,[b,8,c],[13,[[d],6],e,20]] [2,e,[3,d,4],[c,[[5],[b],[[6]]],a],7] [a,b,c,d,6,e] True
+*/
+
+
+
+common-unique-elements(L1, L2, N):-
+	[X1 | Y1] = L1,
+	member(X1, L2),
+	common-unique-elements(L1, L2, N1),
+	append([X1], N1, N ).
+
 
 
 
