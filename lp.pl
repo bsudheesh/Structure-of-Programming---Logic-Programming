@@ -170,16 +170,20 @@ L1 L2 N Result
 common-unique-elements([],_,[]).
 
 
-make-nested-list-simple(L, Lists):-
-	[X1 | Y1] = L;
-	is_list(X1),
-	make-nested-list-simple(Y1, Lists).
+make-nested-list-simple([],[]).
 
 make-nested-list-simple(L, Lists):-
-	[X1 | Y1] = L;
+	[X1 | Y1] = L,
+	is_list(X1),
+	make-nested-list-simple(X1, Lists2),
+	make-nested-list-simple(Y1, Lists1),
+	append(Lists1,Lists2, Lists).
+
+make-nested-list-simple(L, Lists):-
+	[X1 | Y1] = L,
 	not(is_list(X1)),
-	make-nested-list-simple(Y1, Lists).
-	append([X1], Lists, Lists).
+	make-nested-list-simple(Y1, Lists1),
+	append([X1], List1, Lists).
 	
 
 common-unique-elements(L1, L2, N):-
