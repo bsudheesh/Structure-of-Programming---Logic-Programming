@@ -175,6 +175,11 @@ common-unique-elements(L1, L2, N):-
 	common-unique-elements(Y1, L2, N1),
 	append([X1], N1, N ).
 
+common-unique-elements(L1, L2, N):-
+	[X1 | Y1] = L1,
+	not(member(X1, L2)),
+	common-unique-elements(Y1, L2, N).
+
 
 
 
