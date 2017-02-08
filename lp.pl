@@ -169,6 +169,19 @@ L1 L2 N Result
 
 common-unique-elements([],_,[]).
 
+
+make-nested-list-simple(L, Lists):-
+	[X1 | Y1] = L;
+	is_list(X1),
+	make-nested-list-simple(Y1, Lists).
+
+make-nested-list-simple(L, Lists):-
+	[X1 | Y1] = L;
+	not(is_list(X1)),
+	make-nested-list-simple(Y1, Lists).
+	append([X1], Lists, Lists).
+	
+
 common-unique-elements(L1, L2, N):-
 	[X1 | Y1] = L1,
 	member(X1, L2),
