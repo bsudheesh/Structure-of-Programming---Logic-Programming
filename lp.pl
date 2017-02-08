@@ -183,7 +183,7 @@ make-nested-list-simple(L, Lists):-
 	[X1 | Y1] = L,
 	not(is_list(X1)),
 	make-nested-list-simple(Y1, Lists1),
-	append([X1], List1, Lists).
+	append([X1], Lists1, Lists).
 	
 
 common-unique-elements(L1, L2, N):-
