@@ -134,6 +134,15 @@ min-above-min(L1, L2, N):-
 	min-above-min-helper-function(L1, M2, Z),
 	get-min-function(Z, N).
 
+min-above-min-helper-function(L1, M2, Z):-
+	[X | Y] = L1,
+	X <= M2,
+	min-above-min-helper-function(Y, M2, Z).
+
+min-above-min-helper-function([X | Y], M2, [X |Z]):-
+	min-above-min-helper-function(Y, M2, Z).
+
+
 
 
 
